@@ -18,7 +18,16 @@ rectangle_surface.fill('red')                           # fill rectangle with re
 #
 sky_bg = pygame.image.load('graphics/Sky.png')          # load sky background
 ground_bg = pygame.image.load('graphics/ground.png')    # load terrain background
-
+#
+font = pygame.font.Font(
+                        None,                           # None = default font
+                        50                              # font size
+)
+text = font.render(
+                    game_title,                         # text to draw
+                    False,                              # antialiasing,
+                    'black'                             # color
+)
 while True:                                             # main loop
     for event in pygame.event.get():                    # loop through events
         if event.type == pygame.QUIT:                   # quit by closing window
@@ -26,12 +35,15 @@ while True:                                             # main loop
             exit()                                      # prevent further updates
 
     # draw all our elements
-    # screen.blit(rectangle_surface, (200, 100))          # draw rectangle on screen
 
     # when drawing surfaces order is relevant
-    # latest are topmost !!!
+    # latest are topmost, this rectangle is hidden!
+    screen.blit(rectangle_surface, (200, 100))          # draw rectangle on screen
+    #
     screen.blit(sky_bg, (0, 0))                         # draw sky
     screen.blit(ground_bg, (0, 300))                    # draw terrain
+    #
+    screen.blit(text, (300, 50))
 
     # update everything
     pygame.display.update()                             # update display surface
