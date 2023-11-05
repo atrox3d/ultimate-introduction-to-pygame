@@ -59,6 +59,9 @@ while True:                                                 # main loop
     screen.blit(sky_bg, (0, 0))                             # draw sky
     screen.blit(ground_bg, (0, 300))                        # draw terrain
     #
+    score_bg = score_rect.inflate(15, 15)
+    # pygame.draw.rect(screen, 'Pink', score_bg)
+    pygame.draw.rect(screen, 'Pink', score_bg, border_radius=10)
     screen.blit(score, score_rect)                          # draw score
     #
     screen.blit(snail, snail_rect)                          # draw snail using rect
