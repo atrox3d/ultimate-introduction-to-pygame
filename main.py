@@ -7,7 +7,6 @@ pygame.init()                                           # initialize engine
 width = 800
 height = 400
 screen = pygame.display.set_mode((width, height))       # create display surface
-
 game_title = 'Runner'
 pygame.display.set_caption(game_title)                  # set window title
 
@@ -15,9 +14,6 @@ clock = pygame.time.Clock()                             # instantiate clock obje
 
 rectangle_surface = pygame.Surface((100, 200))          # create rectangle 100*200 (w, h)
 rectangle_surface.fill('red')                           # fill rectangle with red
-#
-sky_bg = pygame.image.load('graphics/Sky.png')          # load sky background
-ground_bg = pygame.image.load('graphics/ground.png')    # load terrain background
 #
 font = pygame.font.Font(
                         # None,                           # None = default font
@@ -29,6 +25,13 @@ text = font.render(
                     False,                              # antialiasing,
                     'black'                             # color
 )
+#
+sky_bg = pygame.image.load('graphics/Sky.png')          # load sky background
+ground_bg = pygame.image.load('graphics/ground.png')    # load terrain background
+#
+snail = pygame.image.load('graphics/snail/snail1.png')
+snail_x = 600
+
 while True:                                             # main loop
     for event in pygame.event.get():                    # loop through events
         if event.type == pygame.QUIT:                   # quit by closing window
@@ -44,7 +47,10 @@ while True:                                             # main loop
     screen.blit(sky_bg, (0, 0))                         # draw sky
     screen.blit(ground_bg, (0, 300))                    # draw terrain
     #
-    screen.blit(text, (300, 50))
+    screen.blit(text, (300, 50))                        # draw text
+    #
+    screen.blit(snail, (snail_x, 250))                  # draw snail
+    snail_x = snail_x < -100 and 800 or snail_x - 4     # update snail position
 
     # update everything
     pygame.display.update()                             # update display surface
