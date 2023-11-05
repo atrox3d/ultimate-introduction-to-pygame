@@ -20,7 +20,8 @@ sky_bg = pygame.image.load('graphics/Sky.png')          # load sky background
 ground_bg = pygame.image.load('graphics/ground.png')    # load terrain background
 #
 font = pygame.font.Font(
-                        None,                           # None = default font
+                        # None,                           # None = default font
+                        'font/Pixeltype.ttf',           # load font
                         50                              # font size
 )
 text = font.render(
