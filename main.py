@@ -72,6 +72,7 @@ while True:                                                 # main loop
     #
     screen.blit(player, player_rect)                        # draw player using rect
 
+    # pygame.draw.line(screen, 'black', (0, 0), (screen.get_width(), screen.get_height()))
     # if player_rect.colliderect(snail_rect):
     #     print("COLLISION")
 
