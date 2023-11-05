@@ -15,6 +15,9 @@ clock = pygame.time.Clock()                             # instantiate clock obje
 
 rectangle_surface = pygame.Surface((100, 200))          # create rectangle 100*200 (w, h)
 rectangle_surface.fill('red')                           # fill rectangle with red
+#
+sky_bg = pygame.image.load('graphics/Sky.png')          # load sky background
+ground_bg = pygame.image.load('graphics/ground.png')    # load terrain background
 
 while True:                                             # main loop
     for event in pygame.event.get():                    # loop through events
@@ -23,7 +26,12 @@ while True:                                             # main loop
             exit()                                      # prevent further updates
 
     # draw all our elements
-    screen.blit(rectangle_surface, (200, 100))              # draw rectangle on screen
+    # screen.blit(rectangle_surface, (200, 100))          # draw rectangle on screen
+
+    # when drawing surfaces order is relevant
+    # latest are topmost !!!
+    screen.blit(sky_bg, (0, 0))                         # draw sky
+    screen.blit(ground_bg, (0, 300))                    # draw terrain
 
     # update everything
     pygame.display.update()                             # update display surface
