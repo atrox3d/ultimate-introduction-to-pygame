@@ -20,11 +20,12 @@ font = pygame.font.Font(
                         'font/Pixeltype.ttf',               # load font
                         50                                  # font size
 )
-text = font.render(
+score = font.render(
                     game_title,                             # text to draw
                     False,                                  # antialiasing,
                     'black'                                 # color
 )
+score_rect = score.get_rect(center=(400, 50))               # get centered rect from text
 #
 sky_img = 'graphics/Sky.png'
 sky_bg = pygame.image.load(sky_img).convert()               # load sky background and convert it
@@ -58,7 +59,7 @@ while True:                                                 # main loop
     screen.blit(sky_bg, (0, 0))                             # draw sky
     screen.blit(ground_bg, (0, 300))                        # draw terrain
     #
-    screen.blit(text, (300, 50))                            # draw text
+    screen.blit(score, score_rect)                          # draw score
     #
     screen.blit(snail, snail_rect)                          # draw snail using rect
     if snail_rect.right <= 0:                              # update snail position
