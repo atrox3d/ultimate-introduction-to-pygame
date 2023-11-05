@@ -45,6 +45,9 @@ while True:                                                 # main loop
         if event.type == pygame.QUIT:                       # quit by closing window
             pygame.quit()
             exit()                                          # prevent further updates
+        elif event.type == pygame.MOUSEMOTION:
+            if player_rect.collidepoint(event.pos):
+                print('collision')
 
     # draw all our elements
 
@@ -64,6 +67,14 @@ while True:                                                 # main loop
         snail_rect.left -= 4
     #
     screen.blit(player, player_rect)                        # draw player using rect
+
+    # if player_rect.colliderect(snail_rect):
+    #     print("COLLISION")
+
+    # if player_rect.collidepoint(pygame.mouse.get_pos()):
+    #     print("COLLISION")
+    #     print(pygame.mouse.get_pressed())
+
     # update everything
     pygame.display.update()                                 # update display surface
     clock.tick(60)                                          # set framerate: 60fps/one loop every 1.666 milliseconds
