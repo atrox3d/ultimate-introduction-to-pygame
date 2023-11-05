@@ -1,4 +1,5 @@
 import pygame
+# https://stackoverflow.com/questions/19747371/python-exit-commands-why-so-many-and-when-should-each-be-used
 from sys import exit
 
 pygame.init()                                           # initialize engine
@@ -6,6 +7,9 @@ pygame.init()                                           # initialize engine
 width = 800
 height = 400
 screen = pygame.display.set_mode((width, height))       # create display surface
+
+game_title = 'Runner'
+pygame.display.set_caption(game_title)                  # set window title
 
 while True:                                             # main loop
     for event in pygame.event.get():                    # loop through events
