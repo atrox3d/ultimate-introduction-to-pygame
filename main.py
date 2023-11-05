@@ -33,7 +33,7 @@ ground_bg = pygame.image.load(ground_img).convert()         # load terrain backg
 #
 snail_img = 'graphics/snail/snail1.png'
 snail = pygame.image.load(snail_img).convert_alpha()        # load snail and converting respecting alpha channel
-snail_x = 600
+snail_rect = snail.get_rect(bottomright=(600, 300))
 #
 player_img = 'graphics/Player/player_walk_1.png'
 player = pygame.image.load(player_img).convert_alpha()      # load player and convert respecting alpha channel
@@ -57,8 +57,11 @@ while True:                                                 # main loop
     #
     screen.blit(text, (300, 50))                            # draw text
     #
-    screen.blit(snail, (snail_x, 250))                      # draw snail
-    snail_x = snail_x < -100 and 800 or snail_x - 4         # update snail position
+    screen.blit(snail, snail_rect)                          # draw snail using rect
+    if snail_rect.right <= 0:                              # update snail position
+        snail_rect.left = 800
+    else:
+        snail_rect.left -= 4
     #
     screen.blit(player, player_rect)                        # draw player using rect
     # update everything
