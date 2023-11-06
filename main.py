@@ -23,7 +23,8 @@ font = pygame.font.Font(
 score = font.render(
                     game_title,                             # text to draw
                     False,                                  # antialiasing,
-                    'black'                                 # color
+                    # 'black'                                 # color
+                    (64, 64, 64)
 )
 score_rect = score.get_rect(center=(400, 50))               # get centered rect from text
 #
@@ -46,9 +47,9 @@ while True:                                                 # main loop
         if event.type == pygame.QUIT:                       # quit by closing window
             pygame.quit()
             exit()                                          # prevent further updates
-        elif event.type == pygame.MOUSEMOTION:
-            if player_rect.collidepoint(event.pos):
-                print('collision')
+        # elif event.type == pygame.MOUSEMOTION:
+        #     if player_rect.collidepoint(event.pos):
+        #         print('collision')
 
     # draw all our elements
 
@@ -61,11 +62,11 @@ while True:                                                 # main loop
     #
     score_bg = score_rect.inflate(15, 15)
     # pygame.draw.rect(screen, 'Pink', score_bg)
-    pygame.draw.rect(screen, 'Pink', score_bg, border_radius=10)
+    pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
     screen.blit(score, score_rect)                          # draw score
     #
     screen.blit(snail, snail_rect)                          # draw snail using rect
-    if snail_rect.right <= 0:                              # update snail position
+    if snail_rect.right <= 0:                               # update snail position
         snail_rect.left = 800
     else:
         snail_rect.left -= 4
