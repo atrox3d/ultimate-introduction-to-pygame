@@ -47,8 +47,17 @@ while True:                                                 # main loop
         if event.type == pygame.QUIT:                       # quit by closing window
             pygame.quit()
             exit()                                          # prevent further updates
-        # elif event.type == pygame.MOUSEMOTION:
-        #     if player_rect.collidepoint(event.pos):
+        elif event.type == pygame.KEYDOWN:                  # check if key is pressed
+            print('key down')
+            if event.key == pygame.K_SPACE:                 # if pressed check if space
+                print('jump')
+            elif event.key == pygame.K_q:                   # if pressed check if q
+                pygame.quit()
+                exit()
+        elif event.type == pygame.KEYUP:                    # check if key is released
+            print('key up')
+        # elif event.type == pygame.MOUSEMOTION:             # check if mouse is moved
+        #     if player_rect.collidepoint(event.pos):        # check if mouse collides with player rect
         #         print('collision')
 
     # draw all our elements
@@ -72,6 +81,10 @@ while True:                                                 # main loop
         snail_rect.left -= 4
     #
     screen.blit(player, player_rect)                        # draw player using rect
+
+    # keys = pygame.key.get_pressed()                        # get state of ALL keys
+    # if keys[pygame.K_SPACE]:                               # check if space is True
+    #     print('jump')
 
     # pygame.draw.line(screen, 'black', (0, 0), (screen.get_width(), screen.get_height()))
     # if player_rect.colliderect(snail_rect):
