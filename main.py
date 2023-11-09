@@ -49,10 +49,10 @@ while True:                                                 # main loop
             pygame.quit()
             exit()                                          # prevent further updates
         elif event.type == pygame.KEYDOWN:                  # check if key is pressed
-            print('key down')
             if event.key == pygame.K_SPACE:                 # if pressed check if space
-                print('jump')
-                player_gravity = -20                        # jump
+                if player_rect.bottom >= 300:
+                    print('jump')
+                    player_gravity = -20                        # jump
             elif event.key == pygame.K_q:                   # if pressed check if q
                 pygame.quit()
                 exit()
@@ -60,8 +60,9 @@ while True:                                                 # main loop
             print('key up')
         elif event.type == pygame.MOUSEBUTTONDOWN:         # check if mouse button is pressed
             if player_rect.collidepoint(event.pos):        # check if mouse collides with player rect
-                print('mouse collision')
-                player_gravity = -20                        # jump
+                if player_rect.bottom == 300:
+                    print('jump')
+                    player_gravity = -20                        # jump
 
     # draw all our elements
 
