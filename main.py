@@ -2,6 +2,24 @@ import pygame
 # https://stackoverflow.com/questions/19747371/python-exit-commands-why-so-many-and-when-should-each-be-used
 from sys import exit
 
+
+def display_score():
+    current_time = pygame.time.get_ticks()
+
+    score = font.render(
+        f'{current_time}',  # text to draw
+        False,  # antialiasing,
+        # 'black'                                 # color
+        (64, 64, 64)
+    )
+    score_rect = score.get_rect(center=(400, 50))  # get centered rect from text
+
+    # score_bg = score_rect.inflate(15, 15)
+    # # pygame.draw.rect(screen, 'Pink', score_bg)
+    # pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
+    screen.blit(score, score_rect)                          # draw score
+
+
 pygame.init()                                               # initialize engine
 
 width = 800
@@ -22,13 +40,13 @@ font = pygame.font.Font(
                         'font/Pixeltype.ttf',               # load font
                         50                                  # font size
 )
-score = font.render(
-                    game_title,                             # text to draw
-                    False,                                  # antialiasing,
-                    # 'black'                                 # color
-                    (64, 64, 64)
-)
-score_rect = score.get_rect(center=(400, 50))               # get centered rect from text
+# score = font.render(
+#                     game_title,                             # text to draw
+#                     False,                                  # antialiasing,
+#                     # 'black'                                 # color
+#                     (64, 64, 64)
+# )
+# score_rect = score.get_rect(center=(400, 50))               # get centered rect from text
 #
 sky_img = 'graphics/Sky.png'
 sky_bg = pygame.image.load(sky_img).convert()               # load sky background and convert it
@@ -87,10 +105,11 @@ while True:                                                 # main loop
         screen.blit(sky_bg, (0, 0))                             # draw sky
         screen.blit(ground_bg, (0, 300))                        # draw terrain
         #
-        score_bg = score_rect.inflate(15, 15)
-        # pygame.draw.rect(screen, 'Pink', score_bg)
-        pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
-        screen.blit(score, score_rect)                          # draw score
+        # score_bg = score_rect.inflate(15, 15)
+        # # pygame.draw.rect(screen, 'Pink', score_bg)
+        # pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
+        # screen.blit(score, score_rect)                          # draw score
+        display_score()
         #
         screen.blit(snail, snail_rect)                          # draw snail using rect
         if snail_rect.right <= 0:                               # update snail position
