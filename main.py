@@ -4,10 +4,10 @@ from sys import exit
 
 
 def display_score():
-    current_time = pygame.time.get_ticks()
+    current_time = int(pygame.time.get_ticks() / 1000) - start_time
 
     score = font.render(
-        f'{current_time}',  # text to draw
+        f'Score: {current_time}',  # text to draw
         False,  # antialiasing,
         # 'black'                                 # color
         (64, 64, 64)
@@ -29,6 +29,7 @@ game_title = 'Runner'
 pygame.display.set_caption(game_title)                      # set window title
 
 game_active = True
+start_time = 0
 
 clock = pygame.time.Clock()                                 # instantiate clock object
 
@@ -94,6 +95,7 @@ while True:                                                 # main loop
                 if event.key == pygame.K_SPACE:  # if pressed check if space
                     game_active = True
                     snail_rect.left = 800
+                    start_time = int(pygame.time.get_ticks() / 1000)
 
     if game_active:
         # draw all our elements
