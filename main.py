@@ -41,6 +41,7 @@ player_img = 'graphics/Player/player_walk_1.png'
 player = pygame.image.load(player_img).convert_alpha()      # load player and convert respecting alpha channel
 # player_rect = pygame.rect(left, top, width, height)
 player_rect = player.get_rect(midbottom=(80, 300))
+player_gravity = 0
 
 while True:                                                 # main loop
     for event in pygame.event.get():                        # loop through events
@@ -51,14 +52,16 @@ while True:                                                 # main loop
             print('key down')
             if event.key == pygame.K_SPACE:                 # if pressed check if space
                 print('jump')
+                player_gravity = -20                        # jump
             elif event.key == pygame.K_q:                   # if pressed check if q
                 pygame.quit()
                 exit()
         elif event.type == pygame.KEYUP:                    # check if key is released
             print('key up')
-        # elif event.type == pygame.MOUSEMOTION:             # check if mouse is moved
-        #     if player_rect.collidepoint(event.pos):        # check if mouse collides with player rect
-        #         print('collision')
+        elif event.type == pygame.MOUSEBUTTONDOWN:         # check if mouse button is pressed
+            if player_rect.collidepoint(event.pos):        # check if mouse collides with player rect
+                print('mouse collision')
+                player_gravity = -20                        # jump
 
     # draw all our elements
 
@@ -80,6 +83,8 @@ while True:                                                 # main loop
     else:
         snail_rect.left -= 4
     #
+    player_gravity += 1
+    player_rect.bottom += player_gravity
     screen.blit(player, player_rect)                        # draw player using rect
 
     # keys = pygame.key.get_pressed()                        # get state of ALL keys
