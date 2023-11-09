@@ -83,9 +83,11 @@ while True:                                                 # main loop
     else:
         snail_rect.left -= 4
     #
-    player_gravity += 1
+    if player_gravity < 200: player_gravity += 1
     player_rect.bottom += player_gravity
+    if player_rect.bottom >= 300: player_rect.bottom = 300
     screen.blit(player, player_rect)                        # draw player using rect
+    print(f'{player_gravity = }')
 
     # keys = pygame.key.get_pressed()                        # get state of ALL keys
     # if keys[pygame.K_SPACE]:                               # check if space is True
