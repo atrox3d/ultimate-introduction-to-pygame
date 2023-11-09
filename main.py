@@ -10,6 +10,8 @@ screen = pygame.display.set_mode((width, height))           # create display sur
 game_title = 'Runner'
 pygame.display.set_caption(game_title)                      # set window title
 
+game_active = True
+
 clock = pygame.time.Clock()                                 # instantiate clock object
 
 rectangle_surface = pygame.Surface((100, 200))              # create rectangle 100*200 (w, h)
@@ -64,44 +66,50 @@ while True:                                                 # main loop
                     print('jump')
                     player_gravity = -20                        # jump
 
-    # draw all our elements
+    if game_active:
+        # draw all our elements
 
-    # when drawing surfaces order is relevant
-    # latest are topmost, this rectangle is hidden!
-    screen.blit(rectangle_surface, (200, 100))              # draw rectangle on screen
-    #
-    screen.blit(sky_bg, (0, 0))                             # draw sky
-    screen.blit(ground_bg, (0, 300))                        # draw terrain
-    #
-    score_bg = score_rect.inflate(15, 15)
-    # pygame.draw.rect(screen, 'Pink', score_bg)
-    pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
-    screen.blit(score, score_rect)                          # draw score
-    #
-    screen.blit(snail, snail_rect)                          # draw snail using rect
-    if snail_rect.right <= 0:                               # update snail position
-        snail_rect.left = 800
+        # when drawing surfaces order is relevant
+        # latest are topmost, this rectangle is hidden!
+        screen.blit(rectangle_surface, (200, 100))              # draw rectangle on screen
+        #
+        screen.blit(sky_bg, (0, 0))                             # draw sky
+        screen.blit(ground_bg, (0, 300))                        # draw terrain
+        #
+        score_bg = score_rect.inflate(15, 15)
+        # pygame.draw.rect(screen, 'Pink', score_bg)
+        pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
+        screen.blit(score, score_rect)                          # draw score
+        #
+        screen.blit(snail, snail_rect)                          # draw snail using rect
+        if snail_rect.right <= 0:                               # update snail position
+            snail_rect.left = 800
+        else:
+            snail_rect.left -= 4
+        #
+        if player_gravity < 200: player_gravity += 1
+        player_rect.bottom += player_gravity
+        if player_rect.bottom >= 300: player_rect.bottom = 300
+        screen.blit(player, player_rect)                        # draw player using rect
+        print(f'{player_gravity = }')
+        #
+        if snail_rect.colliderect(player_rect):
+            game_active = False
+
+        # keys = pygame.key.get_pressed()                        # get state of ALL keys
+        # if keys[pygame.K_SPACE]:                               # check if space is True
+        #     print('jump')
+
+        # pygame.draw.line(screen, 'black', (0, 0), (screen.get_width(), screen.get_height()))
+        # if player_rect.colliderect(snail_rect):
+        #     print("COLLISION")
+
+        # if player_rect.collidepoint(pygame.mouse.get_pos()):
+        #     print("COLLISION")
+        #     print(pygame.mouse.get_pressed())
+
+        # update everything
     else:
-        snail_rect.left -= 4
-    #
-    if player_gravity < 200: player_gravity += 1
-    player_rect.bottom += player_gravity
-    if player_rect.bottom >= 300: player_rect.bottom = 300
-    screen.blit(player, player_rect)                        # draw player using rect
-    print(f'{player_gravity = }')
-
-    # keys = pygame.key.get_pressed()                        # get state of ALL keys
-    # if keys[pygame.K_SPACE]:                               # check if space is True
-    #     print('jump')
-
-    # pygame.draw.line(screen, 'black', (0, 0), (screen.get_width(), screen.get_height()))
-    # if player_rect.colliderect(snail_rect):
-    #     print("COLLISION")
-
-    # if player_rect.collidepoint(pygame.mouse.get_pos()):
-    #     print("COLLISION")
-    #     print(pygame.mouse.get_pressed())
-
-    # update everything
+        screen.fill('yellow')
     pygame.display.update()                                 # update display surface
     clock.tick(60)                                          # set framerate: 60fps/one loop every 1.666 milliseconds
