@@ -47,6 +47,13 @@ def obstacle_movement(obstacle_list):
     # print(f'{len(obstacle_list) = }')
 
 
+def collisions(player, obstacles):
+    for obstacle in obstacles:
+        if player.colliderect(obstacle):
+            return False
+    return True
+
+
 pygame.init()                                               # initialize engine
 
 width = 800
@@ -146,6 +153,7 @@ while True:                                                         # main loop
                     game_active = True
                     # snail_rect.left = 800
                     start_time = int(pygame.time.get_ticks() / 1000)
+                    obstacle_rect_list = []
 
     if game_active:
         # draw all our elements
@@ -186,7 +194,7 @@ while True:                                                         # main loop
         # if player_rect.collidepoint(pygame.mouse.get_pos()):
         #     print("COLLISION")
         #     print(pygame.mouse.get_pressed())
-
+        game_active = collisions(player_rect, obstacle_rect_list)
         # update everything
     else:
         screen.fill((94, 129, 162))
