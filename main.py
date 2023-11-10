@@ -18,6 +18,7 @@ def display_score():
     # # pygame.draw.rect(screen, 'Pink', score_bg)
     # pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
     screen.blit(score, score_rect)                          # draw score
+    return current_time
 
 
 pygame.init()                                               # initialize engine
@@ -30,6 +31,7 @@ pygame.display.set_caption(game_title)                      # set window title
 
 game_active = False
 start_time = 0
+score = 0
 
 clock = pygame.time.Clock()                                 # instantiate clock object
 
@@ -112,7 +114,7 @@ while True:                                                 # main loop
         screen.blit(sky_bg, (0, 0))                             # draw sky
         screen.blit(ground_bg, (0, 300))                        # draw terrain
         #
-        display_score()
+        score = display_score()
         #
         screen.blit(snail, snail_rect)                          # draw snail using rect
         if snail_rect.right <= 0:                               # update snail position
@@ -145,8 +147,15 @@ while True:                                                 # main loop
     else:
         screen.fill((94, 129, 162))
         screen.blit(player_stand, player_stand_rect)        # draw character and center it
-        screen.blit(title, title_rect)                          # draw score
-        screen.blit(game_message, game_message_rect)                          # draw score
+
+        screen.blit(title, title_rect)                      # draw score
+
+        if score:
+            score_message = font.render(f'Score: {score}', False, (64, 64, 64))
+            score_message_rect = score_message.get_rect(center=(400, 350))
+            screen.blit(score_message, score_message_rect)                      # draw score
+        else:
+            screen.blit(game_message, game_message_rect)        # draw message
 
     pygame.display.update()                                 # update display surface
     clock.tick(60)                                          # set framerate: 60fps/one loop every 1.666 milliseconds
