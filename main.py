@@ -28,7 +28,7 @@ screen = pygame.display.set_mode((width, height))           # create display sur
 game_title = 'Runner'
 pygame.display.set_caption(game_title)                      # set window title
 
-game_active = True
+game_active = False
 start_time = 0
 
 clock = pygame.time.Clock()                                 # instantiate clock object
@@ -41,14 +41,6 @@ font = pygame.font.Font(
                         'font/Pixeltype.ttf',               # load font
                         50                                  # font size
 )
-# score = font.render(
-#                     game_title,                             # text to draw
-#                     False,                                  # antialiasing,
-#                     # 'black'                                 # color
-#                     (64, 64, 64)
-# )
-# score_rect = score.get_rect(center=(400, 50))               # get centered rect from text
-#
 sky_img = 'graphics/Sky.png'
 sky_bg = pygame.image.load(sky_img).convert()               # load sky background and convert it
 ground_img = 'graphics/ground.png'
@@ -63,6 +55,10 @@ player = pygame.image.load(player_img).convert_alpha()      # load player and co
 # player_rect = pygame.rect(left, top, width, height)
 player_rect = player.get_rect(midbottom=(80, 300))
 player_gravity = 0
+#
+player_stand = pygame.image.load('graphics/Player/player_stand.png')
+player_stand = pygame.transform.rotozoom(player_stand, 0, 2)
+player_stand_rect = player_stand.get_rect(center=(400, 200))
 
 while True:                                                 # main loop
     for event in pygame.event.get():                        # loop through events
@@ -107,10 +103,6 @@ while True:                                                 # main loop
         screen.blit(sky_bg, (0, 0))                             # draw sky
         screen.blit(ground_bg, (0, 300))                        # draw terrain
         #
-        # score_bg = score_rect.inflate(15, 15)
-        # # pygame.draw.rect(screen, 'Pink', score_bg)
-        # pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
-        # screen.blit(score, score_rect)                          # draw score
         display_score()
         #
         screen.blit(snail, snail_rect)                          # draw snail using rect
@@ -142,6 +134,8 @@ while True:                                                 # main loop
 
         # update everything
     else:
-        screen.fill('yellow')
+        screen.fill((94, 129, 162))
+        screen.blit(player_stand, player_stand_rect)        # draw character and center it
+
     pygame.display.update()                                 # update display surface
     clock.tick(60)                                          # set framerate: 60fps/one loop every 1.666 milliseconds
