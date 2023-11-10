@@ -39,7 +39,11 @@ def obstacle_movement(obstacle_list):
         obstacle_rect.x -= 5
         if obstacle_rect.right < 0:
             obstacle_list.remove(obstacle_rect)
-        screen.blit(snail, obstacle_rect)
+
+        if obstacle_rect.bottom == 300:
+            screen.blit(snail, obstacle_rect)
+        else:
+            screen.blit(fly, obstacle_rect)
     # print(f'{len(obstacle_list) = }')
 
 
@@ -74,8 +78,11 @@ ground_bg = pygame.image.load(ground_img).convert()                 # load terra
 #
 snail_img = 'graphics/snail/snail1.png'
 snail = pygame.image.load(snail_img).convert_alpha()                # load snail and converting respecting alpha channel
-snail_rect = snail.get_rect(bottomright=(600, 300))
-
+# snail_rect = snail.get_rect(bottomright=(600, 300))
+#
+fly_img = 'graphics/Fly/Fly1.png'
+fly = pygame.image.load(fly_img).convert_alpha()                # load snail and converting respecting alpha channel
+# fly_rect = fly.get_rect(bottomright=(600, 300))
 
 obstacle_rect_list = []
 #
@@ -127,14 +134,17 @@ while True:                                                         # main loop
                         player_gravity = -20                   # jump
             elif event.type == obstacle_timer:
                 print('test timer')
-                # print(f'UPDATE | {len(obstacle_rect_list) = }')
-                obstacle_rect_list.append(snail.get_rect(bottomright=(randint(900, 1100), 300)))
-                # print(f'APPEND | {len(obstacle_rect_list) = }')
+                if randint(0, 1):
+                    print('snail')
+                    obstacle_rect_list.append(snail.get_rect(bottomright=(randint(900, 1100), 300)))
+                else:
+                    print('fly')
+                    obstacle_rect_list.append(fly.get_rect(bottomright=(randint(900, 1100), 210)))
         else:
-            if event.type == pygame.KEYDOWN:  # check if key is pressed
-                if event.key == pygame.K_SPACE:  # if pressed check if space
+            if event.type == pygame.KEYDOWN:                        # check if key is pressed
+                if event.key == pygame.K_SPACE:                     # if pressed check if space
                     game_active = True
-                    snail_rect.left = 800
+                    # snail_rect.left = 800
                     start_time = int(pygame.time.get_ticks() / 1000)
 
     if game_active:
@@ -162,8 +172,8 @@ while True:                                                         # main loop
         #                                                           
         obstacle_movement(obstacle_rect_list)                       
         #                                                           
-        if snail_rect.colliderect(player_rect):                     
-            game_active = False                                     
+        # if snail_rect.colliderect(player_rect):
+        #     game_active = False
                                                                     
         # keys = pygame.key.get_pressed()                           # get state of ALL keys
         # if keys[pygame.K_SPACE]:                                  # check if space is True
