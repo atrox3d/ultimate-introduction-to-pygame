@@ -204,8 +204,8 @@ while True:                                                         # main loop
         screen.blit(title, title_rect)                              # draw score
 
         if score:
-            score_message = font.render(f'Score: {score}', False, (64, 64, 64))
-
+            score_message = font.render(f'Your Score: {score}', False, (64, 64, 64))
+            score_message_rect = score_message.get_rect(center=(400, 330))
             screen.blit(score_message, score_message_rect)           # draw score
             #
         else:
