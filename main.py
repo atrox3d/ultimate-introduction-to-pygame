@@ -54,8 +54,7 @@ def collisions(player, obstacles):
     return True
 
 
-pygame.init()                                               # initialize engine
-
+pygame.init()                                                       # initialize engine
 width = 800
 height = 400
 screen = pygame.display.set_mode((width, height))                   # create display surface
@@ -88,7 +87,7 @@ snail = pygame.image.load(snail_img).convert_alpha()                # load snail
 # snail_rect = snail.get_rect(bottomright=(600, 300))
 #
 fly_img = 'graphics/Fly/Fly1.png'
-fly = pygame.image.load(fly_img).convert_alpha()                # load snail and converting respecting alpha channel
+fly = pygame.image.load(fly_img).convert_alpha()                    # load snail and converting respecting alpha channel
 # fly_rect = fly.get_rect(bottomright=(600, 300))
 
 obstacle_rect_list = []
@@ -135,10 +134,10 @@ while True:                                                         # main loop
             elif event.type == pygame.KEYUP:                        # check if key is released
                 print('key up')
             elif event.type == pygame.MOUSEBUTTONDOWN:              # check if mouse button is pressed
-                if player_rect.collidepoint(event.pos):        # check if mouse collides with player rect
+                if player_rect.collidepoint(event.pos):             # check if mouse collides with player rect
                     if player_rect.bottom == 300:
                         print('jump')
-                        player_gravity = -20                   # jump
+                        player_gravity = -20                        # jump
             elif event.type == obstacle_timer:
                 print('test timer')
                 if randint(0, 1):
@@ -159,12 +158,12 @@ while True:                                                         # main loop
 
         # when drawing surfaces order is relevant
         # latest are topmost, this rectangle is hidden!
-        screen.blit(rectangle_surface, (200, 100))                  # draw rectangle on screen
+        # screen.blit(rectangle_surface, (200, 100))                  # draw rectangle on screen
         #                                                           
         screen.blit(sky_bg, (0, 0))                                 # draw sky
         screen.blit(ground_bg, (0, 300))                            # draw terrain
         #                                                           
-        score = display_score()                                     
+        score = display_score()                                     # update ad draw score
         #                                                           
         # if snail_rect.right <= 0:                                 # update snail position
         #     snail_rect.left = 800                                 
@@ -172,12 +171,12 @@ while True:                                                         # main loop
         #     snail_rect.left -= 4                                  
         # screen.blit(snail, snail_rect)                            # draw snail using rect
         #                                                           
-        if player_gravity < 200: player_gravity += 1                
-        player_rect.bottom += player_gravity                        
-        if player_rect.bottom >= 300: player_rect.bottom = 300      
+        if player_gravity < 200: player_gravity += 1                # calc gravity acceleration
+        player_rect.bottom += player_gravity                        # apply gravity to player, if jumping
+        if player_rect.bottom >= 300: player_rect.bottom = 300      # stop at terrain
         screen.blit(player, player_rect)                            # draw player using rect
         #                                                           
-        obstacle_movement(obstacle_rect_list)                       
+        obstacle_movement(obstacle_rect_list)                       # update enemies on screen
         #                                                           
         # if snail_rect.colliderect(player_rect):
         #     game_active = False
@@ -193,21 +192,22 @@ while True:                                                         # main loop
         # if player_rect.collidepoint(pygame.mouse.get_pos()):
         #     print("COLLISION")
         #     print(pygame.mouse.get_pressed())
-        game_active = collisions(player_rect, obstacle_rect_list)
+        game_active = collisions(player_rect, obstacle_rect_list)   # check collisions, game over if true
         # update everything
     else:
-        screen.fill((94, 129, 162))
+        screen.fill((94, 129, 162))                                 # game over screen bg color
         screen.blit(player_stand, player_stand_rect)                # draw character and center it
-        obstacle_rect_list.clear()
-        player_rect.midbottom = (80, 300)
-        player_gravity = 0
         screen.blit(title, title_rect)                              # draw score
 
+        player_rect.midbottom = (80, 300)                           # reset player position
+        player_gravity = 0                                          # reset gravity
+        obstacle_rect_list.clear()                                  # reset enemies
+
+        # draw score or message
         if score:
             score_message = font.render(f'Your Score: {score}', False, (64, 64, 64))
             score_message_rect = score_message.get_rect(center=(400, 330))
             screen.blit(score_message, score_message_rect)           # draw score
-            #
         else:
             screen.blit(game_message, game_message_rect)            # draw message
 
