@@ -153,7 +153,6 @@ while True:                                                         # main loop
                     game_active = True
                     # snail_rect.left = 800
                     start_time = int(pygame.time.get_ticks() / 1000)
-                    obstacle_rect_list = []
 
     if game_active:
         # draw all our elements
@@ -199,15 +198,18 @@ while True:                                                         # main loop
     else:
         screen.fill((94, 129, 162))
         screen.blit(player_stand, player_stand_rect)                # draw character and center it
-
+        obstacle_rect_list.clear()
+        player_rect.midbottom = (80, 300)
+        player_gravity = 0
         screen.blit(title, title_rect)                              # draw score
 
         if score:
             score_message = font.render(f'Score: {score}', False, (64, 64, 64))
-            score_message_rect = score_message.get_rect(center=(400, 350))
-            screen.blit(score_message, score_message_rect)                      # draw score
-        else:
-            screen.blit(game_message, game_message_rect)        # draw message
 
-    pygame.display.update()                                     # update display surface
-    clock.tick(60)                                              # set framerate: 60fps/one loop every 1.666 milliseconds
+            screen.blit(score_message, score_message_rect)           # draw score
+            #
+        else:
+            screen.blit(game_message, game_message_rect)            # draw message
+
+    pygame.display.update()                                         # update display surface
+    clock.tick(60)                                                  # set framerate: 60fps/one loop every 1.666 milliseconds
