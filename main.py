@@ -99,12 +99,22 @@ sky_bg = pygame.image.load(sky_img).convert()                       # load sky b
 ground_img = 'graphics/ground.png'
 ground_bg = pygame.image.load(ground_img).convert()                 # load terrain background and convert it
 #
-snail_img = 'graphics/snail/snail1.png'
-snail = pygame.image.load(snail_img).convert_alpha()                # load snail and converting respecting alpha channel
+snail_frame1 = 'graphics/snail/snail1.png'
+snail_frame1 = pygame.image.load(snail_frame1).convert_alpha()                # load snail and converting respecting alpha channel
+snail_frame2 = 'graphics/snail/snail2.png'
+snail_frame2 = pygame.image.load(snail_frame2).convert_alpha()                # load snail and converting respecting alpha channel
+snail_index = 0
+snail_frames = [snail_frame1, snail_frame2]
+snail = snail_frames[snail_index]
 # snail_rect = snail.get_rect(bottomright=(600, 300))
 #
-fly_img = 'graphics/Fly/Fly1.png'
-fly = pygame.image.load(fly_img).convert_alpha()                    # load snail and converting respecting alpha channel
+fly_frame1 = 'graphics/Fly/Fly1.png'
+fly_frame1 = pygame.image.load(fly_frame1).convert_alpha()                    # load snail and converting respecting alpha channel
+fly_frame2 = 'graphics/Fly/Fly2.png'
+fly_frame2 = pygame.image.load(fly_frame2).convert_alpha()                    # load snail and converting respecting alpha channel
+fly_index = 0
+fly_frames = [fly_frame1, fly_frame2]
+fly = fly_frames[fly_index]
 # fly_rect = fly.get_rect(bottomright=(600, 300))
 
 obstacle_rect_list = []
@@ -136,6 +146,10 @@ game_message_rect = game_message.get_rect(center=(400, 350))
 obstacle_timer = pygame.USEREVENT + 1                               # get next user event available
 pygame.time.set_timer(obstacle_timer, 900)                          # set user event every 900 ms
 #
+snail_timer = pygame.USEREVENT + 2
+pygame.time.set_timer(snail_timer, 500)                          # set user event every 900 ms
+fly_timer = pygame.USEREVENT + 3
+pygame.time.set_timer(fly_timer, 200)                          # set user event every 900 ms
 
 while True:                                                         # main loop
     for event in pygame.event.get():                                # loop through events
@@ -164,13 +178,18 @@ while True:                                                         # main loop
                         print('jump')
                         player_gravity = -20                        # jump
             elif event.type == obstacle_timer:
-                print('test timer')
+                print('OBSTACLE TIMER')
                 if randint(0, 1):
-                    print('snail')
                     obstacle_rect_list.append(snail.get_rect(bottomright=(randint(900, 1100), 300)))
                 else:
                     print('fly')
                     obstacle_rect_list.append(fly.get_rect(bottomright=(randint(900, 1100), 210)))
+            elif event.type == snail_timer:
+                snail_index = 0 if snail_index == 1 else 1
+                snail = snail_frames[snail_index]
+            elif event.type == fly_timer:
+                fly_index = 0 if fly_index == 1 else 1
+                fly = fly_frames[fly_index]
         else:
             if event.type == pygame.KEYDOWN:                        # check if key is pressed
                 if event.key == pygame.K_SPACE:                     # if pressed check if space
