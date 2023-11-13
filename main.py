@@ -54,6 +54,23 @@ def collisions(player, obstacles):
     return True
 
 
+def player_animation():
+    """
+    display walking animation if player on floor
+    display jump if player in air
+
+    :return:
+    """
+    global player, player_index
+
+    if player_rect.bottom < 300:
+        player = player_jump
+    else:
+        player_index += 0.1
+        if player_index >= len(player_walk): player_index = 0
+        player = player_walk[int(player_index)]
+
+
 pygame.init()                                                       # initialize engine
 width = 800
 height = 400
@@ -92,9 +109,17 @@ fly = pygame.image.load(fly_img).convert_alpha()                    # load snail
 
 obstacle_rect_list = []
 #
-player_img = 'graphics/Player/player_walk_1.png'
-player = pygame.image.load(player_img).convert_alpha()              # load player and convert respecting alpha channel
+player_walk1 = 'graphics/Player/player_walk_1.png'
+player_walk1 = pygame.image.load(player_walk1).convert_alpha()      # load player and convert respecting alpha channel
+player_walk2 = 'graphics/Player/player_walk_2.png'
+player_walk2 = pygame.image.load(player_walk2).convert_alpha()      # load player and convert respecting alpha channel
+player_walk = [player_walk1, player_walk2]
+player_index = 0
+player_jump = 'graphics/Player/jump.png'
+player_jump = pygame.image.load(player_jump).convert_alpha()        # load player and convert respecting alpha channel
+
 # player_rect = pygame.rect(left, top, width, height)
+player = player_walk[player_index]
 player_rect = player.get_rect(midbottom=(80, 300))
 player_gravity = 0
 #
@@ -174,6 +199,7 @@ while True:                                                         # main loop
         if player_gravity < 200: player_gravity += 1                # calc gravity acceleration
         player_rect.bottom += player_gravity                        # apply gravity to player, if jumping
         if player_rect.bottom >= 300: player_rect.bottom = 300      # stop at terrain
+        player_animation()
         screen.blit(player, player_rect)                            # draw player using rect
         #                                                           
         obstacle_movement(obstacle_rect_list)                       # update enemies on screen
