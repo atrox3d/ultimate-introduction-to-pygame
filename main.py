@@ -1,8 +1,57 @@
+from pathlib import Path
+
 import pygame
 # https://stackoverflow.com/questions/19747371/python-exit-commands-why-so-many-and-when-should-each-be-used
 from sys import exit
 from random import randint
 
+
+class Player(pygame.sprite.Sprite):
+    IMAGES_PATH = Path('graphics/player')
+    WALK1 = IMAGES_PATH / 'player_walk_1.png'
+    WALK2 = IMAGES_PATH / 'player_walk_2.png'
+    JUMP = IMAGES_PATH / 'jump.png'
+    LEFT = 200
+    BOTTOM = 300
+    MIDBOTTOM = LEFT, BOTTOM
+
+    def __init__(self):
+        super().__init__()
+
+        player_walk1 = pygame.image.load(self.WALK1).convert_alpha()  # load player and convert respecting alpha channel
+        player_walk2 = pygame.image.load(self.WALK2).convert_alpha()  # load player and convert respecting alpha channel
+        self.player_walk = [player_walk1, player_walk2]
+        self.player_index = 0
+        self.player_jump = pygame.image.load(self.JUMP).convert_alpha()  # load player and convert respecting alpha channel
+
+        self.image = self.player_walk[self.player_index]
+        self.rect = self.image.get_rect(midbottom=Player.MIDBOTTOM)
+        self.gravity = 0
+
+    def input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE] and self.rect.bottom >= Player.BOTTOM:
+            # TODO: create Player.jump()
+            self.gravity = -20
+
+    def animation(self):
+        if self.rect.bottom < self.BOTTOM:
+            self.image = self.player_jump
+        else:
+            self.player_index += 0.1
+            if self.player_index >= len(self.player_walk): self.player_index = 0
+            self.image = self.player_walk[int(self.player_index)]
+
+    def apply_gravity(self):
+        self.gravity += 1
+        self.rect.y += self.gravity
+        if self.rect.bottom >= Player.BOTTOM:
+            self.rect.bottom = Player.BOTTOM
+
+    def update(self):
+        self.input()
+        self.apply_gravity()
+        self.animation()
 
 def display_score():
     """
@@ -61,14 +110,14 @@ def player_animation():
 
     :return:
     """
-    global player, player_index
+    global player_surf, player_index
 
     if player_rect.bottom < 300:
-        player = player_jump
+        player_surf = player_jump
     else:
         player_index += 0.1
         if player_index >= len(player_walk): player_index = 0
-        player = player_walk[int(player_index)]
+        player_surf = player_walk[int(player_index)]
 
 
 pygame.init()                                                       # initialize engine
@@ -83,6 +132,10 @@ start_time = 0
 score = 0
 
 clock = pygame.time.Clock()                                         # instantiate clock object
+
+player = pygame.sprite.GroupSingle()
+player.add(Player())
+
 
 rectangle_surface = pygame.Surface((100, 200))                      # create rectangle 100*200 (w, h)
 rectangle_surface.fill('red')                                       # fill rectangle with red
@@ -129,8 +182,8 @@ player_jump = 'graphics/Player/jump.png'
 player_jump = pygame.image.load(player_jump).convert_alpha()        # load player and convert respecting alpha channel
 
 # player_rect = pygame.rect(left, top, width, height)
-player = player_walk[player_index]
-player_rect = player.get_rect(midbottom=(80, 300))
+player_surf = player_walk[player_index]
+player_rect = player_surf.get_rect(midbottom=(80, 300))
 player_gravity = 0
 #
 player_stand = pygame.image.load('graphics/Player/player_stand.png')
@@ -219,8 +272,11 @@ while True:                                                         # main loop
         player_rect.bottom += player_gravity                        # apply gravity to player, if jumping
         if player_rect.bottom >= 300: player_rect.bottom = 300      # stop at terrain
         player_animation()
-        screen.blit(player, player_rect)                            # draw player using rect
-        #                                                           
+        screen.blit(player_surf, player_rect)                            # draw player using rect
+
+        player.draw(screen)
+        player.update()
+        #
         obstacle_movement(obstacle_rect_list)                       # update enemies on screen
         #                                                           
         # if snail_rect.colliderect(player_rect):
