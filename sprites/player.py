@@ -8,6 +8,7 @@ class Player(pygame.sprite.Sprite):
     WALK1 = IMAGES_PATH / 'player_walk_1.png'
     WALK2 = IMAGES_PATH / 'player_walk_2.png'
     JUMP = IMAGES_PATH / 'jump.png'
+    STAND = IMAGES_PATH / 'player_stand.png'
 
     SOUNDS_PATH = Path('audio')
     JUMP_SOUND = SOUNDS_PATH / 'jump.mp3'
@@ -25,6 +26,8 @@ class Player(pygame.sprite.Sprite):
         self.player_index = 0
         self.player_jump = pygame.image.load(self.JUMP).convert_alpha()  # load player and convert respecting alpha channel
 
+        self.player_stand = pygame.image.load(self.STAND).convert_alpha()  # load player and convert respecting alpha channel
+
         self.image = self.player_walk[self.player_index]
         self.rect = self.image.get_rect(midbottom=Player.MIDBOTTOM)
         self.gravity = 0
@@ -38,6 +41,11 @@ class Player(pygame.sprite.Sprite):
             # TODO: create Player.jump()
             self.gravity = -20
             self.jump_sound.play()
+
+    def get_player_stand(self):
+        player_stand = pygame.transform.rotozoom(self.player_stand, 0, 2)  # scale by 2 at angle 0
+        player_stand_rect = player_stand.get_rect(center=(400, 200))  # get centered rect
+        return player_stand, player_stand_rect
 
     def animation(self):
         if self.rect.bottom < self.BOTTOM:
