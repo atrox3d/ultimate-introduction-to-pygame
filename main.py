@@ -143,27 +143,6 @@ def display_score():
     return current_time
 
 
-def obstacle_movement(obstacle_list):
-    """
-    update every obstacle and remove it if off-screen
-
-    list is passed by reference, so it is updated between calls
-
-    :param obstacle_list:
-    :return:
-    """
-    for obstacle_rect in obstacle_list:
-        obstacle_rect.x -= 5
-        if obstacle_rect.right < 0:
-            obstacle_list.remove(obstacle_rect)
-
-        if obstacle_rect.bottom == 300:
-            screen.blit(snail, obstacle_rect)
-        else:
-            screen.blit(fly, obstacle_rect)
-    # print(f'{len(obstacle_list) = }')
-
-
 def collisions(player, obstacles):
     for obstacle in obstacles:
         if player.colliderect(obstacle):
@@ -223,26 +202,6 @@ sky_bg = pygame.image.load(sky_img).convert()                       # load sky b
 #
 ground_img = 'graphics/ground.png'
 ground_bg = pygame.image.load(ground_img).convert()                 # load terrain background and convert it
-#
-snail_frame1 = 'graphics/snail/snail1.png'
-snail_frame1 = pygame.image.load(snail_frame1).convert_alpha()                # load snail and converting respecting alpha channel
-snail_frame2 = 'graphics/snail/snail2.png'
-snail_frame2 = pygame.image.load(snail_frame2).convert_alpha()                # load snail and converting respecting alpha channel
-snail_index = 0
-snail_frames = [snail_frame1, snail_frame2]
-snail = snail_frames[snail_index]
-# snail_rect = snail.get_rect(bottomright=(600, 300))
-#
-fly_frame1 = 'graphics/Fly/Fly1.png'
-fly_frame1 = pygame.image.load(fly_frame1).convert_alpha()                    # load snail and converting respecting alpha channel
-fly_frame2 = 'graphics/Fly/Fly2.png'
-fly_frame2 = pygame.image.load(fly_frame2).convert_alpha()                    # load snail and converting respecting alpha channel
-fly_index = 0
-fly_frames = [fly_frame1, fly_frame2]
-fly = fly_frames[fly_index]
-# fly_rect = fly.get_rect(bottomright=(600, 300))
-
-obstacle_rect_list = []
 #
 player_walk1 = 'graphics/Player/player_walk_1.png'
 player_walk1 = pygame.image.load(player_walk1).convert_alpha()      # load player and convert respecting alpha channel
@@ -311,12 +270,6 @@ while True:                                                         # main loop
                 # else:
                 #     print('fly')
                 #     obstacle_rect_list.append(fly.get_rect(bottomright=(randint(900, 1100), 210)))
-            elif event.type == snail_timer:
-                snail_index = 0 if snail_index == 1 else 1
-                snail = snail_frames[snail_index]
-            elif event.type == fly_timer:
-                fly_index = 0 if fly_index == 1 else 1
-                fly = fly_frames[fly_index]
         else:
             if event.type == pygame.KEYDOWN:                        # check if key is pressed
                 if event.key == pygame.K_SPACE:                     # if pressed check if space
@@ -362,7 +315,7 @@ while True:                                                         # main loop
 
         player_rect.midbottom = (80, 300)                           # reset player position
         player_gravity = 0                                          # reset gravity
-        obstacle_rect_list.clear()                                  # reset enemies
+        # obstacle_rect_list.clear()                                  # reset enemies
 
         # draw score or message
         if score:
