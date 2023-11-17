@@ -107,6 +107,7 @@ class Obstacle(pygame.sprite.Sprite):
 
 def sprite_collision():
     if pygame.sprite.spritecollide(player.sprite, obstacles, False):
+        obstacles.empty()
         return False
     else:
         return True
