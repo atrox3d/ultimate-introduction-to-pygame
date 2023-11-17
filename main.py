@@ -23,7 +23,6 @@ def display_score():
     :return:
     """
     current_time = int(pygame.time.get_ticks() / 1000) - start_time
-
     score = font.render(
         f'Score: {current_time}',  # text to draw
         False,  # antialiasing,
@@ -31,39 +30,43 @@ def display_score():
         (64, 64, 64)
     )
     score_rect = score.get_rect(center=(400, 50))  # get centered rect from text
-
-    # score_bg = score_rect.inflate(15, 15)
-    # # pygame.draw.rect(screen, 'Pink', score_bg)
-    # pygame.draw.rect(screen, '#c0e8ec', score_bg, border_radius=10)
     screen.blit(score, score_rect)                          # draw score
     return current_time
 
 
 pygame.init()                                                       # initialize engine
+#
+# game window
+#
 width = 800
 height = 400
 screen = pygame.display.set_mode((width, height))                   # create display surface
 game_title = 'Pixel Runner'
 pygame.display.set_caption(game_title)                              # set window title
-
+#
+# game params
+#
 game_active = False
 start_time = 0
 score = 0
 clock = pygame.time.Clock()                                         # instantiate clock object
+#
+# game music
+#
 bg_music = pygame.mixer.Sound(Path('audio/music.wav'))
 bg_music.set_volume(0.8)
 bg_music.play(loops=-1)
-
+#
+# player
+#
 player = pygame.sprite.GroupSingle()
 player.add(Player())
-
+#
+# obstacles
+#
 obstacles = pygame.sprite.Group()
 #
-font = pygame.font.Font(
-                        # None,                                       # None = default font
-                        'font/Pixeltype.ttf',                       # load font
-                        50                                          # font size
-)
+# game bg
 #
 sky_img = 'graphics/Sky.png'
 sky_bg = pygame.image.load(sky_img).convert()                       # load sky background and convert it
@@ -71,17 +74,37 @@ sky_bg = pygame.image.load(sky_img).convert()                       # load sky b
 ground_img = 'graphics/ground.png'
 ground_bg = pygame.image.load(ground_img).convert()                 # load terrain background and convert it
 #
+# game title, message
+#
+font = pygame.font.Font(
+                        # None,                                       # None = default font
+                        'font/Pixeltype.ttf',                       # load font
+                        50                                          # font size
+)
+#
 title = font.render(game_title, False, (64, 64, 64))
 title_rect = title.get_rect(center=(400, 50))                       # get centered rect from text
 #
 game_message = font.render('Press SPACE to Run', False, (64, 64, 64))
 game_message_rect = game_message.get_rect(center=(400, 350))
 #
+# game timers
+#
 obstacle_timer = pygame.USEREVENT + 1                               # get next user event available
 pygame.time.set_timer(obstacle_timer, 900)                          # set user event every 900 ms
 #
+#
+# main loop
+#
+#
 while True:                                                         # main loop
+    #
+    # event loop
+    #
     for event in pygame.event.get():                                # loop through events
+        #
+        # quit, anywhere in the game
+        #
         if event.type == pygame.QUIT:                               # quit by closing window
             pygame.quit()
             exit()                                                  # prevent further updates
@@ -89,7 +112,9 @@ while True:                                                         # main loop
             if event.key == pygame.K_q:                             # if pressed check if q
                 pygame.quit()
                 exit()
-
+        #
+        # events depending on game state
+        #
         if game_active:
             if event.type == pygame.KEYDOWN:                        # check if key is pressed
                 if event.key == pygame.K_q:                       # if pressed check if q
@@ -103,7 +128,9 @@ while True:                                                         # main loop
                 if event.key == pygame.K_SPACE:                     # if pressed check if space
                     game_active = True
                     start_time = int(pygame.time.get_ticks() / 1000)
-
+    #
+    # screen update depending on game state
+    #
     if game_active:
         # draw all our elements
 
