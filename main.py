@@ -88,8 +88,15 @@ class Obstacle(pygame.sprite.Sprite):
 
         self.index = 0
         self.image = self.frames[self.index]
-        self.rect = self.image.get_rect(midbottom=random.randint(900, 1100), self.y_pos)
+        self.rect = self.image.get_rect(midbottom=(random.randint(900, 1100), self.y_pos))
 
+    def animation(self):
+        self.index += 0.1
+        if self.index >= len(self.frames): self.index = 0
+        self.image = self.frames[int(self.index)]
+
+    def update(self):
+        self.animation()
 
 def display_score():
     """
