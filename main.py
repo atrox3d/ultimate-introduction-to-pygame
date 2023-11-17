@@ -198,8 +198,10 @@ pygame.display.set_caption(game_title)                              # set window
 game_active = False
 start_time = 0
 score = 0
-
 clock = pygame.time.Clock()                                         # instantiate clock object
+bg_music = pygame.mixer.Sound(Path('audio/music.wav'))
+bg_music.set_volume(0.8)
+bg_music.play(loops=-1)
 
 player = pygame.sprite.GroupSingle()
 player.add(Player())
