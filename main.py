@@ -143,30 +143,6 @@ def display_score():
     return current_time
 
 
-def collisions(player, obstacles):
-    for obstacle in obstacles:
-        if player.colliderect(obstacle):
-            return False
-    return True
-
-
-def player_animation():
-    """
-    display walking animation if player on floor
-    display jump if player in air
-
-    :return:
-    """
-    global player_surf, player_index
-
-    if player_rect.bottom < 300:
-        player_surf = player_jump
-    else:
-        player_index += 0.1
-        if player_index >= len(player_walk): player_index = 0
-        player_surf = player_walk[int(player_index)]
-
-
 pygame.init()                                                       # initialize engine
 width = 800
 height = 400
@@ -186,10 +162,6 @@ player = pygame.sprite.GroupSingle()
 player.add(Player())
 
 obstacles = pygame.sprite.Group()
-
-
-rectangle_surface = pygame.Surface((100, 200))                      # create rectangle 100*200 (w, h)
-rectangle_surface.fill('red')                                       # fill rectangle with red
 #
 font = pygame.font.Font(
                         # None,                                       # None = default font
