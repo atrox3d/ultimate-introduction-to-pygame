@@ -60,12 +60,12 @@ class Obstacle(pygame.sprite.Sprite):
     SNAIL = 'snail'.lower()
 
     FLY_IMAGES_PATH = Path('graphics/Fly')
-    FLY1 = FLY_IMAGES_PATH / 'Fly1'
-    FLY2 = FLY_IMAGES_PATH / 'Fly2'
+    FLY1 = FLY_IMAGES_PATH / 'Fly1.png'
+    FLY2 = FLY_IMAGES_PATH / 'Fly2.png'
 
     SNAIL_IMAGES_PATH = Path('graphics/snail')
-    SNAIL1 = SNAIL_IMAGES_PATH / 'snail1'
-    SNAIL2 = SNAIL_IMAGES_PATH / 'snail2'
+    SNAIL1 = SNAIL_IMAGES_PATH / 'snail1.png'
+    SNAIL2 = SNAIL_IMAGES_PATH / 'snail2.png'
 
     def __init__(self, type):
         super().__init__()
@@ -97,6 +97,13 @@ class Obstacle(pygame.sprite.Sprite):
 
     def update(self):
         self.animation()
+        self.rect.x -= 6
+        self.destroy()
+
+    def destroy(self):
+        if self.rect.x <= -100:
+            self.kill()
+
 
 def display_score():
     """
@@ -180,6 +187,8 @@ clock = pygame.time.Clock()                                         # instantiat
 
 player = pygame.sprite.GroupSingle()
 player.add(Player())
+
+obstacles = pygame.sprite.Group()
 
 
 rectangle_surface = pygame.Surface((100, 200))                      # create rectangle 100*200 (w, h)
@@ -276,12 +285,14 @@ while True:                                                         # main loop
                         print('jump')
                         player_gravity = -20                        # jump
             elif event.type == obstacle_timer:
-                print('OBSTACLE TIMER')
-                if randint(0, 1):
-                    obstacle_rect_list.append(snail.get_rect(bottomright=(randint(900, 1100), 300)))
-                else:
-                    print('fly')
-                    obstacle_rect_list.append(fly.get_rect(bottomright=(randint(900, 1100), 210)))
+                obstacle_type = random.choice([Obstacle.FLY, Obstacle.SNAIL, Obstacle.SNAIL, Obstacle.SNAIL])
+                obstacles.add(Obstacle(obstacle_type))
+                # print('OBSTACLE TIMER')
+                # if randint(0, 1):
+                #     obstacle_rect_list.append(snail.get_rect(bottomright=(randint(900, 1100), 300)))
+                # else:
+                #     print('fly')
+                #     obstacle_rect_list.append(fly.get_rect(bottomright=(randint(900, 1100), 210)))
             elif event.type == snail_timer:
                 snail_index = 0 if snail_index == 1 else 1
                 snail = snail_frames[snail_index]
@@ -313,16 +324,18 @@ while True:                                                         # main loop
         #     snail_rect.left -= 4                                  
         # screen.blit(snail, snail_rect)                            # draw snail using rect
         #                                                           
-        if player_gravity < 200: player_gravity += 1                # calc gravity acceleration
-        player_rect.bottom += player_gravity                        # apply gravity to player, if jumping
-        if player_rect.bottom >= 300: player_rect.bottom = 300      # stop at terrain
-        player_animation()
-        screen.blit(player_surf, player_rect)                            # draw player using rect
+        # if player_gravity < 200: player_gravity += 1                # calc gravity acceleration
+        # player_rect.bottom += player_gravity                        # apply gravity to player, if jumping
+        # if player_rect.bottom >= 300: player_rect.bottom = 300      # stop at terrain
+        # player_animation()
+        # screen.blit(player_surf, player_rect)                            # draw player using rect
 
         player.draw(screen)
         player.update()
+        obstacles.draw(screen)
+        obstacles.update()
         #
-        obstacle_movement(obstacle_rect_list)                       # update enemies on screen
+        # obstacle_movement(obstacle_rect_list)                       # update enemies on screen
         #                                                           
         # if snail_rect.colliderect(player_rect):
         #     game_active = False
@@ -338,7 +351,7 @@ while True:                                                         # main loop
         # if player_rect.collidepoint(pygame.mouse.get_pos()):
         #     print("COLLISION")
         #     print(pygame.mouse.get_pressed())
-        game_active = collisions(player_rect, obstacle_rect_list)   # check collisions, game over if true
+        # game_active = collisions(player_rect, obstacle_rect_list)   # check collisions, game over if true
         # update everything
     else:
         screen.fill((94, 129, 162))                                 # game over screen bg color
