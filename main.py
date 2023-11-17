@@ -188,11 +188,6 @@ game_message_rect = game_message.get_rect(center=(400, 350))
 obstacle_timer = pygame.USEREVENT + 1                               # get next user event available
 pygame.time.set_timer(obstacle_timer, 900)                          # set user event every 900 ms
 #
-snail_timer = pygame.USEREVENT + 2
-pygame.time.set_timer(snail_timer, 500)                          # set user event every 900 ms
-fly_timer = pygame.USEREVENT + 3
-pygame.time.set_timer(fly_timer, 200)                          # set user event every 900 ms
-
 while True:                                                         # main loop
     for event in pygame.event.get():                                # loop through events
         if event.type == pygame.QUIT:                               # quit by closing window
@@ -241,7 +236,8 @@ while True:                                                         # main loop
         screen.blit(title, title_rect)                              # draw score
 
         # draw score or message
-        if score:            score_message = font.render(f'Your Score: {score}', False, (64, 64, 64))
+        if score:
+            score_message = font.render(f'Your Score: {score}', False, (64, 64, 64))
             score_message_rect = score_message.get_rect(center=(400, 330))
             screen.blit(score_message, score_message_rect)           # draw score
         else:
