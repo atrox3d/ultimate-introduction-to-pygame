@@ -71,10 +71,6 @@ sky_bg = pygame.image.load(sky_img).convert()                       # load sky b
 ground_img = 'graphics/ground.png'
 ground_bg = pygame.image.load(ground_img).convert()                 # load terrain background and convert it
 #
-# player_stand = pygame.image.load('graphics/Player/player_stand.png')
-# player_stand = pygame.transform.rotozoom(player_stand, 0, 2)        # scale by 2 at angle 0
-# player_stand_rect = player_stand.get_rect(center=(400, 200))        # get centered rect
-#
 title = font.render(game_title, False, (64, 64, 64))
 title_rect = title.get_rect(center=(400, 50))                       # get centered rect from text
 #
