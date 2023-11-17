@@ -175,20 +175,6 @@ sky_bg = pygame.image.load(sky_img).convert()                       # load sky b
 ground_img = 'graphics/ground.png'
 ground_bg = pygame.image.load(ground_img).convert()                 # load terrain background and convert it
 #
-player_walk1 = 'graphics/Player/player_walk_1.png'
-player_walk1 = pygame.image.load(player_walk1).convert_alpha()      # load player and convert respecting alpha channel
-player_walk2 = 'graphics/Player/player_walk_2.png'
-player_walk2 = pygame.image.load(player_walk2).convert_alpha()      # load player and convert respecting alpha channel
-player_walk = [player_walk1, player_walk2]
-player_index = 0
-player_jump = 'graphics/Player/jump.png'
-player_jump = pygame.image.load(player_jump).convert_alpha()        # load player and convert respecting alpha channel
-
-# player_rect = pygame.rect(left, top, width, height)
-player_surf = player_walk[player_index]
-player_rect = player_surf.get_rect(midbottom=(80, 300))
-player_gravity = 0
-#
 player_stand = pygame.image.load('graphics/Player/player_stand.png')
 player_stand = pygame.transform.rotozoom(player_stand, 0, 2)        # scale by 2 at angle 0
 player_stand_rect = player_stand.get_rect(center=(400, 200))        # get centered rect
@@ -219,34 +205,16 @@ while True:                                                         # main loop
 
         if game_active:
             if event.type == pygame.KEYDOWN:                        # check if key is pressed
-                if event.key == pygame.K_SPACE:                     # if pressed check if space
-                    if player_rect.bottom >= 300:
-                        print('jump')
-                        player_gravity = -20                        # jump
-                elif event.key == pygame.K_q:                       # if pressed check if q
+                if event.key == pygame.K_q:                       # if pressed check if q
                     pygame.quit()
                     exit()
-            elif event.type == pygame.KEYUP:                        # check if key is released
-                print('key up')
-            elif event.type == pygame.MOUSEBUTTONDOWN:              # check if mouse button is pressed
-                if player_rect.collidepoint(event.pos):             # check if mouse collides with player rect
-                    if player_rect.bottom == 300:
-                        print('jump')
-                        player_gravity = -20                        # jump
             elif event.type == obstacle_timer:
                 obstacle_type = random.choice([Obstacle.FLY, Obstacle.SNAIL, Obstacle.SNAIL, Obstacle.SNAIL])
                 obstacles.add(Obstacle(obstacle_type))
-                # print('OBSTACLE TIMER')
-                # if randint(0, 1):
-                #     obstacle_rect_list.append(snail.get_rect(bottomright=(randint(900, 1100), 300)))
-                # else:
-                #     print('fly')
-                #     obstacle_rect_list.append(fly.get_rect(bottomright=(randint(900, 1100), 210)))
         else:
             if event.type == pygame.KEYDOWN:                        # check if key is pressed
                 if event.key == pygame.K_SPACE:                     # if pressed check if space
                     game_active = True
-                    # snail_rect.left = 800
                     start_time = int(pygame.time.get_ticks() / 1000)
 
     if game_active:
@@ -260,38 +228,20 @@ while True:                                                         # main loop
         screen.blit(ground_bg, (0, 300))                            # draw terrain
         #                                                           
         score = display_score()                                     # update ad draw score
-        #                                                           
-        # if snail_rect.right <= 0:                                 # update snail position
-        #     snail_rect.left = 800                                 
-        # else:                                                     
-        #     snail_rect.left -= 4                                  
-        # screen.blit(snail, snail_rect)                            # draw snail using rect
-        #                                                           
-        # if player_gravity < 200: player_gravity += 1                # calc gravity acceleration
-        # player_rect.bottom += player_gravity                        # apply gravity to player, if jumping
-        # if player_rect.bottom >= 300: player_rect.bottom = 300      # stop at terrain
-        # player_animation()
-        # screen.blit(player_surf, player_rect)                            # draw player using rect
 
         player.draw(screen)
         player.update()
         obstacles.draw(screen)
         obstacles.update()
         game_active = sprite_collision()
-        # game_active = collisions(player_rect, obstacle_rect_list)   # check collisions, game over if true
         # update everything
     else:
         screen.fill((94, 129, 162))                                 # game over screen bg color
         screen.blit(player_stand, player_stand_rect)                # draw character and center it
         screen.blit(title, title_rect)                              # draw score
 
-        player_rect.midbottom = (80, 300)                           # reset player position
-        player_gravity = 0                                          # reset gravity
-        # obstacle_rect_list.clear()                                  # reset enemies
-
         # draw score or message
-        if score:
-            score_message = font.render(f'Your Score: {score}', False, (64, 64, 64))
+        if score:            score_message = font.render(f'Your Score: {score}', False, (64, 64, 64))
             score_message_rect = score_message.get_rect(center=(400, 330))
             screen.blit(score_message, score_message_rect)           # draw score
         else:
