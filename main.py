@@ -12,6 +12,10 @@ class Player(pygame.sprite.Sprite):
     WALK1 = IMAGES_PATH / 'player_walk_1.png'
     WALK2 = IMAGES_PATH / 'player_walk_2.png'
     JUMP = IMAGES_PATH / 'jump.png'
+
+    SOUNDS_PATH = Path('audio')
+    JUMP_SOUND = SOUNDS_PATH / 'jump.mp3'
+
     LEFT = 80
     BOTTOM = 300
     MIDBOTTOM = LEFT, BOTTOM
@@ -29,11 +33,15 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom=Player.MIDBOTTOM)
         self.gravity = 0
 
+        self.jump_sound = pygame.mixer.Sound(self.JUMP_SOUND)
+        self.jump_sound.set_volume(0.5)
+
     def input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE] and self.rect.bottom >= Player.BOTTOM:
             # TODO: create Player.jump()
             self.gravity = -20
+            self.jump_sound.play()
 
     def animation(self):
         if self.rect.bottom < self.BOTTOM:
