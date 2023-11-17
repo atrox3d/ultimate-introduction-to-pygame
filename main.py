@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
     WALK1 = IMAGES_PATH / 'player_walk_1.png'
     WALK2 = IMAGES_PATH / 'player_walk_2.png'
     JUMP = IMAGES_PATH / 'jump.png'
-    LEFT = 200
+    LEFT = 80
     BOTTOM = 300
     MIDBOTTOM = LEFT, BOTTOM
 
@@ -103,6 +103,13 @@ class Obstacle(pygame.sprite.Sprite):
     def destroy(self):
         if self.rect.x <= -100:
             self.kill()
+
+
+def sprite_collision():
+    if pygame.sprite.spritecollide(player.sprite, obstacles, False):
+        return False
+    else:
+        return True
 
 
 def display_score():
@@ -334,23 +341,7 @@ while True:                                                         # main loop
         player.update()
         obstacles.draw(screen)
         obstacles.update()
-        #
-        # obstacle_movement(obstacle_rect_list)                       # update enemies on screen
-        #                                                           
-        # if snail_rect.colliderect(player_rect):
-        #     game_active = False
-                                                                    
-        # keys = pygame.key.get_pressed()                           # get state of ALL keys
-        # if keys[pygame.K_SPACE]:                                  # check if space is True
-        #     print('jump')
-
-        # pygame.draw.line(screen, 'black', (0, 0), (screen.get_width(), screen.get_height()))
-        # if player_rect.colliderect(snail_rect):
-        #     print("COLLISION")
-
-        # if player_rect.collidepoint(pygame.mouse.get_pos()):
-        #     print("COLLISION")
-        #     print(pygame.mouse.get_pressed())
+        game_active = sprite_collision()
         # game_active = collisions(player_rect, obstacle_rect_list)   # check collisions, game over if true
         # update everything
     else:
