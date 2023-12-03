@@ -20,15 +20,15 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        player_walk1 = pygame.image.load(self.WALK1).convert_alpha()  # load player and convert respecting alpha channel
-        player_walk2 = pygame.image.load(self.WALK2).convert_alpha()  # load player and convert respecting alpha channel
-        self.player_walk = [player_walk1, player_walk2]
-        self.player_index = 0
-        self.player_jump = pygame.image.load(self.JUMP).convert_alpha()  # load player and convert respecting alpha channel
+        walk1 = pygame.image.load(self.WALK1).convert_alpha()  # load player and convert respecting alpha channel
+        walk2 = pygame.image.load(self.WALK2).convert_alpha()  # load player and convert respecting alpha channel
+        self.walk = [walk1, walk2]
+        self.index = 0
+        self.jump = pygame.image.load(self.JUMP).convert_alpha()  # load player and convert respecting alpha channel
 
-        self.player_stand = pygame.image.load(self.STAND).convert_alpha()  # load player and convert respecting alpha channel
+        self.stand = pygame.image.load(self.STAND).convert_alpha()  # load player and convert respecting alpha channel
 
-        self.image = self.player_walk[self.player_index]
+        self.image = self.walk[self.index]
         self.rect = self.image.get_rect(midbottom=Player.MIDBOTTOM)
         self.gravity = 0
 
@@ -43,17 +43,17 @@ class Player(pygame.sprite.Sprite):
             self.jump_sound.play()
 
     def get_player_stand(self):
-        player_stand = pygame.transform.rotozoom(self.player_stand, 0, 2)  # scale by 2 at angle 0
-        player_stand_rect = player_stand.get_rect(center=(400, 200))  # get centered rect
-        return player_stand, player_stand_rect
+        stand = pygame.transform.rotozoom(self.stand, 0, 2)  # scale by 2 at angle 0
+        stand_rect = stand.get_rect(center=(400, 200))  # get centered rect
+        return stand, stand_rect
 
     def animation(self):
         if self.rect.bottom < self.BOTTOM:
-            self.image = self.player_jump
+            self.image = self.jump
         else:
-            self.player_index += 0.1
-            if self.player_index >= len(self.player_walk): self.player_index = 0
-            self.image = self.player_walk[int(self.player_index)]
+            self.index += 0.1
+            if self.index >= len(self.walk): self.index = 0
+            self.image = self.walk[int(self.index)]
 
     def apply_gravity(self):
         self.gravity += 1
